@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks: [ "pynet" ]
+
+  app:
+    build: 
+      context: .
+    depends_on:
+      - redis
+    ports:
+      - '5001:5000'
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks: [ "pynet" ]
+volumes:
+  redis_data:
+
+networks:
+    pynet:
