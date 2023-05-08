@@ -1,0 +1,19 @@
+---
+  - name: Upadate system
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+      exclude:
+        - firefox
+    when: ansible_os_family == 'RedHat'
+
+  - name: Check if reboot needed
+    command: "/usr/bin/needs-restarting -r"
+    ignore_errors: yes
+    register: reboot_required
+
+  - name: Reboot
+    reboot:
+      post_reboot_delay: 60
+    when: reboot_required.rc == 1

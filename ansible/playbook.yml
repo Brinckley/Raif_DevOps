@@ -1,0 +1,7 @@
+- name: Playbook to update packages
+  hosts: servers
+  gather_facts: true
+  become: yes
+
+  roles:
+    - updater
